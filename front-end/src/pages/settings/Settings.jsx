@@ -14,10 +14,7 @@ export default function Settings() {
   const [interests, setInterests] = useState("");
   const [about, setAbout] = useState("");
   const [info, setInfo] = useState("");
-  // const [username, setUsername] = useState("");
 
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
   const [success, setSuccess] = useState(false);
 
   const { user, dispatch } = useContext(Context);
@@ -101,21 +98,27 @@ export default function Settings() {
             // placeholder= "amaithi"
             defaultValue={info.first_name}
             // value="Amaithi"
-
+            minLength={3}
+            maxLength={10}
             onChange={(e) => setFirstname(e.target.value)}
           />
           <label>Last Name</label>
           <input
             type="text"
             // placeholder={first_name}
+            minLength={3}
+            maxLength={10}
             defaultValue={info.last_name}
             onChange={(e) => setLastname(e.target.value)}
           />
-          <label>Date of Birth</label>
+          <label>Date of Birth (minimum 2003 born)</label>
           <DatePicker
             showIcon
             selected={dobDate}
             defaultValue={info.dob}
+            // minDate={"2020, 01, 01"}
+            maxDate={new Date("2003, 01, 01")}
+            // maxDate={new Date('2003, 01, 01')}
             onChange={(date) => setDobDate(date)}
           />
 
@@ -124,12 +127,16 @@ export default function Settings() {
           <input
             type="text"
             // placeholder={first_name}
+            minLength={3}
+            maxLength={20}
             defaultValue={info.profession}
             onChange={(e) => setProfession(e.target.value)}
           />
           <label>Interests</label>
           <input
             type="text"
+            minLength={3}
+            maxLength={50}
             // placeholder={first_name}
             defaultValue={info.interests}
             onChange={(e) => setInterests(e.target.value)}
@@ -137,21 +144,13 @@ export default function Settings() {
           <label>About</label>
           <input
             type="text"
+            minLength={3}
+            maxLength={500}
             // placeholder={first_name}
             defaultValue={info.about}
             onChange={(e) => setAbout(e.target.value)}
           />
-          {/* <label>Email</label>
-          <input
-            type="email"
-            // placeholder={user.email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <label>Password</label>
-          <input
-            type="password"
-            onChange={(e) => setPassword(e.target.value)}
-          /> */}
+
           <button className="settingsSubmit" type="submit">
             Update
           </button>

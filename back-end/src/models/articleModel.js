@@ -24,11 +24,6 @@ const articleSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    // article_category: {
-    //   type: String,
-    //   required: true,
-    // },
-
     article_category_id: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
@@ -38,25 +33,20 @@ const articleSchema = mongoose.Schema(
       type: String,
       required: false,
     },
-
     visibility: {
       type: Boolean,
       required: true,
     },
     published_at: {
       type: Date || null
-      // default: Date.now
+
     }
   },
   {
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
     versionKey: false
   }
-
-
 );
-
-
 
 
 //------------------------------------------------------
@@ -79,11 +69,12 @@ const articleCommentsSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    parent_id: {
+      type: mongoose.Schema.Types.ObjectId,
+
+    }
   },
-  {
-    timestamps: true,
-    versionKey: false
-  },
+  { timestamps: { createdAt: true, updatedAt: false }, versionKey: false }
 );
 //------------------------------------------------------
 //            CATEGORY(ARTICLE) MODEL

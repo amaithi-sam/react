@@ -1,25 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const {
-    getAllArticles,
-    getSingleArticle,
-    // getUserArticle,
-    getUserArticles,
-    createArticle,
-    updateArticle,
-    deleteArticle,
 
-    createUpdateArticleCategory,
-    getAllArticleCategories,
-
-    createComment,
-    getComments,
-    updateComment,
-    // getUserComment,
-    deleteComment,
-
-} = require("../../controllers/v1/articleController");
 
 let control = require("../../controllers/index")
 
@@ -37,20 +19,17 @@ const validateToken = require("../../middleware/validateToken");
 
 router.route("/").get(control.v1_article.getAllArticles)
 
-// router.route("/:id").get(getSingleArticle);
+router.route("/:id").get(control.v1_article.getSingleArticle);
 // router.get("/:id", getSingleArticle) //-- Culprit
 
-router.post("/", control.v1_article.createArticle);
-
-// router.post("/", validateToken, createArticle); - FOR REST API
+router.post("/", validateToken, control.v1_article.createArticle);
 
 router.get("/user", validateToken, control.v1_article.getUserArticles);
 
 // router.get("/user/:id", validateToken, getUserArticle);
 
 router.put("/user/:id", validateToken, control.v1_article.updateArticle);
-router.put("/:id", control.v1_article.updateArticle);
-
+// router.put("/:id", control.v1_article.updateArticle);
 
 router.delete("/user/:id", validateToken, control.v1_article.deleteArticle);
 
@@ -66,23 +45,19 @@ router.post("/category", validateToken, control.v1_article.createUpdateArticleCa
 //          ARTICLE COMMENTS ROUTES
 //------------------------------------------------------
 
-router.route("/comments/:id").get(getComments)
+router.route("/comments/:id").get(control.v1_article.getComments)
 
-router.post("/comments/:id", validateToken, createComment);
+router.post("/comments/:id", validateToken, control.v1_article.createComment);
 
 router.get("/user", validateToken, control.v1_article.getUserArticles);
 
-// router.get("/user/:id", validateToken, getUserArticle);
+router.get("/user/:id", validateToken, control.v1_article.getUserArticle);
 
-router.put("/comments/:id", validateToken, updateComment);
+router.put("/comments/:id", validateToken, control.v1_article.updateComment);
 
-router.delete("/comments/:id", validateToken, deleteComment);
-
-
+router.delete("/comments/:id", validateToken, control.v1_article.deleteComment);
 
 
-// V2 API
-router.get("/:id", control.v1_article.getSingleArticle);
 
 
 

@@ -41,6 +41,7 @@ const registerUser = asyncHandler(async (req, res) => {
     if (login_after_register === "true") {
 
       const token = await tokenGenerator.generateToken(password, user);
+
       res.status(201).json({ message: messages.user.mes_3.message, token });
     } else {
       res.status(201).json({ message: messages.user.mes_4.message })
@@ -168,22 +169,13 @@ const currentUserInfo = asyncHandler(async (req, res) => {
   // const userInfo = await userService.findUserInfo(req.user.id);
 
   const userInfo = await userService.findUserInfo(id = req.params.id);
-  // console.log(userInfo);
   if (!userInfo) {
     res.status(204);
     throw new Error(messages.user.mes_8);
 
   } else {
     res.status(200).json({ userInfo });
-    // res.status(200).json({
-    //   User_Info: {
-    //     name: `${userInfo.first_name} ${userInfo.last_name}`,
-    //     dob: userInfo.dob,
-    //     profession: userInfo.profession,
-    //     interests: userInfo.interests,
-    //     about: userInfo.about,
-    //   },
-    // });
+
   }
 });
 

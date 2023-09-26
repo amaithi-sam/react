@@ -51,11 +51,11 @@ export default function Write() {
       title,
       summary,
       blog_data: desc,
-      article_category: category.label,
+      article_category: category.value,
       visibility: visibility.value,
       photo: ''
     };
-    console.log(newPost);
+    
     if (file) {
       const data = new FormData();
       const filename = Date.now() + file.name;
@@ -69,7 +69,7 @@ export default function Write() {
     try {
       console.log(newPost);
       const res = await axios.post("v2/articles", newPost);
-      // window.location.replace("/articles/" + res.data._id);
+      window.location.replace("/post/" + res.data._id);
     } catch (err) { }
   };
   return (

@@ -1,16 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-const { registerUser,
-    loginUser,
-    currentUser,
-    createUpdateUserInfo,
-    currentUserInfo } = require("../controllers/userController")
 
+const validateToken = require("../../middleware/validateToken");
 
-const validateToken = require("../middleware/validateToken")
-
-let control = require("../../controllers/index")
+let control = require("../../controllers/index");
 
 
 //------------------------------------------------------

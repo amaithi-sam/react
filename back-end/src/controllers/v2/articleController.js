@@ -1,8 +1,6 @@
 const asyncHandler = require("express-async-handler");
 // const bcrypt = require("bcrypt");
 
-const validator = require("../../validators/articleValidator");
-
 const { messages } = require("../../utils/responseMessages");
 
 const articleService = require("../../services/articleServices");
@@ -43,7 +41,7 @@ const getSingleArticle = asyncHandler(async (req, res) => {
 
 const getUserArticles = asyncHandler(async (req, res) => {
 
-  const userArticles = await articleService.findUserArticles(req.user.id);
+  const userArticles = await articleService.findUserArticles(req.params.id);
 
   res.status(200).json(userArticles);
 });
@@ -89,7 +87,7 @@ const createArticle = asyncHandler(async (req, res) => {
 
   var pub = (!visibility === true) ? null : Date.now();
 
-  const newArticle = await articleService.createArticle(user_id, title, summary, article_category, cate_id, visibility, pub, photo);
+  const newArticle = await articleService.createArticle(user_id, title, summary, blog_data, article_category, visibility, pub, photo);
   console.log(newArticle);
   if (newArticle) {
     res.status(201).json(newArticle);
@@ -110,29 +108,29 @@ const createArticle = asyncHandler(async (req, res) => {
 const updateArticle = asyncHandler(async (req, res) => {
   const { title, summary, blog_data, article_category, visibility } = req.body;
 
-  const { error } = validator.validateArticle(title, summary, blog_data, article_category, visibility);
-  if (error) { res.status(403); throw new Error(`${error}`); }
+  // const { error } = validator.validateArticle(title, summary, blog_data, article_category, visibility);
+  // if (error) { res.status(403); throw new Error(`${error}`); }
 
-  const article = await articleService.findOneArticle(req.params.id);
+  // const article = await articleService.findOneArticle(req.params.id);
 
-  if (!article) { res.status(404); throw new Error(messages.article.mes_1); }
+  // if (!article) { res.status(404); throw new Error(messages.article.mes_1); }
 
-  if (article.user_id.toString() !== req.user.id.toString()) { res.status(403); throw new Error(messages.article.mes_5); }
+  // if (article.user_id.toString() !== req.user.id.toString()) { res.status(403); throw new Error(messages.article.mes_5); }
 
   var pub = (!visibility == "true") ? null : Date.now();
 
-  let cate_name = article_category.toLowerCase();
+  // let cate_name = article_category.toLowerCase();
 
 
-  const categoryAvailable = await articleService.findCategory(cate_name);
+  // const categoryAvailable = await articleService.findCategory(cate_name);
 
-  if (!categoryAvailable) { res.status(403); throw new Error(`${article_category} - ${messages.article.mes_2}`); }
+  // if (!categoryAvailable) { res.status(403); throw new Error(`${article_category} - ${messages.article.mes_2}`); }
 
-  const cate_id = categoryAvailable._id
+  // const cate_id = categoryAvailable._id
 
-  const updatedArticle = await articleService.updateOneArticle(req.params.id, title, summary, blog_data, cate_id, visibility, pub);
+  const updatedArticle = await articleService.updateOneArticle(req.params.id, title, summary, blog_data, article_category, visibility, pub);
 
-  if (updatedArticle) { res.status(200).json({ message: messages.article.mes_6, Updated_Article: updatedArticle }); }
+  if (updatedArticle) { res.status(200).json({ message: messages.article.mes_6 }); }
 
   else { res.status(400); throw new Error(messages.article.mes_7); }
 
@@ -148,24 +146,25 @@ const updateArticle = asyncHandler(async (req, res) => {
 
 const deleteArticle = asyncHandler(async (req, res) => {
 
-  const article = await articleService.findOneArticle(req.params.id);
+  // const article = await articleService.findOneArticle(req.params.id);
 
-  if (!article) { res.status(404); throw new Error(messages.article.mes_1); }
+  // if (!article) { res.status(404); throw new Error(messages.article.mes_1); }
 
-  if (article.user_id.toString() !== req.user.id.toString()) { res.status(403); throw new Error(messages.article.mes_5); }
+  // if (article.user_id.toString() !== req.user.id.toString()) { res.status(403); throw new Error(messages.article.mes_5); }
 
   const deletedArticle = await articleService.deleteOneArticle(req.params.id);
-
+  console.log(deletedArticle);
   if (deletedArticle) {
-    res.status(200).json({
-      message: messages.article.mes_8, Article: {
-        title: deletedArticle.title,
-        summary: deletedArticle.summary,
-        blog_data: deletedArticle.summary,
-        article_category: deletedArticle.article_category,
-        visibility: deletedArticle.visibility
-      }
-    });
+    res.status(200).json({ message: "Article Deleted Successfully" });
+    // json({
+    //   message: messages.article.mes_8, Article: {
+    //     title: deletedArticle.title,
+    //     summary: deletedArticle.summary,
+    //     blog_data: deletedArticle.summary,
+    //     article_category: deletedArticle.article_category,
+    //     visibility: deletedArticle.visibility
+    //   }
+    // });
   } else {
     res.status(400); throw new Error(messages.article.mes_9);
   }
@@ -293,17 +292,22 @@ const getComments = asyncHandler(async (req, res) => {
 //@ access Private
 
 const createComment = asyncHandler(async (req, res) => {
-  const { comment } = req.body;
+  const { user_id, article_id, comment_data, parent_id } = req.body;
 
-  if (!comment) { res.status(400); throw new Error(messages.comment.mes_1); }
+  // if (!comment) { res.status(400); throw new Error(messages.comment.mes_1); }
 
-  const newComment = await articleService.createComment(req.user.id, req.params.id, comment)
+  const newComment = await articleService.createComment(
+    user_id,
+    article_id,
+    comment_data,
+    parent_id)
+  // req.user.id, req.params.id, comment)
 
   if (!newComment) { res.status(400); throw new Error(messages.comment.mes_2); }
 
   else {
 
-    res.status(201).json({ message: messages.comment.mes_3 });
+    res.status(201).json({ newComment });
   }
 });
 

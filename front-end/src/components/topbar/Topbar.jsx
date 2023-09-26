@@ -10,18 +10,18 @@ export default function TopBar() {
   const { user, dispatch } = useContext(Context);
   const PF = "http://localhost:5000/images/"
   // const pf_holder = "https://www.shutterstock.com/image-vector/default-profile-picture-avatar-photo-250nw-1681253560.jpg"
-// console.log(user);
-//   useEffect(() => {
-//     const getInfo = async () => {
-//       let res = await axios.get(`/users/user-info/${user._id}`);
-//       setProfile(res.data.profile_pic);
-//       // setTitle(res.data.title);
-//       // setDesc(res.data.blog_data);
-//       // console.log(info);
-//     };
-//     getInfo();
-//   }, []);
-// console.log(profile);
+  // console.log(user);
+  //   useEffect(() => {
+  //     const getInfo = async () => {
+  //       let res = await axios.get(`/users/user-info/${user._id}`);
+  //       setProfile(res.data.profile_pic);
+  //       // setTitle(res.data.title);
+  //       // setDesc(res.data.blog_data);
+  //       // console.log(info);
+  //     };
+  //     getInfo();
+  //   }, []);
+  // console.log(profile);
 
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
@@ -38,46 +38,46 @@ export default function TopBar() {
         <ul className="topList">
           <li className="topListItem">
             <Link className="link" to="/">
-              HOME
+              Home
             </Link>
           </li>
           <li className="topListItem">
-            <Link className="link" to="/">
-              ABOUT
+            <Link className="link" to="/my-posts">
+              My Posts
             </Link>
           </li>
-          
-          <li className="topListItem">
+
+          {/* <li className="topListItem">
             <Link className="link" to="/">
-              CONTACT
+              Categories
             </Link>
-          </li>
+          </li> */}
           <li className="topListItem">
             <Link className="link" to="/write">
-              WRITE
+              Write
             </Link>
           </li>
           <li className="topListItem" onClick={handleLogout}>
-            {user && "LOGOUT"}
+            {user && "Logout"}
           </li>
         </ul>
       </div>
       <div className="topRight">
         {user ? (
           <Link to="/settings">
-          
-            <img className="topImg" src={PF+user._id} alt={user.first_name} />
+
+            <img className="topImg" src={PF + user._id} alt={user.first_name} />
           </Link>
         ) : (
           <ul className="topList">
             <li className="topListItem">
               <Link className="link" to="/login">
-                LOGIN
+                Login
               </Link>
             </li>
             <li className="topListItem">
               <Link className="link" to="/register">
-                REGISTER
+                Register
               </Link>
             </li>
           </ul>

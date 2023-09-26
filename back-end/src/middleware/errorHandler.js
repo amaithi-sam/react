@@ -14,7 +14,7 @@ let constants = {
 //------------------------------------------------------
 
 const errorHandler = (err, req, res, next) => {
-  
+
   const statusCode = res.statusCode ? res.statusCode : 500;
 
   switch (statusCode) {
@@ -52,8 +52,8 @@ const errorHandler = (err, req, res, next) => {
         message: err.message,
         // stackTrace: err.stack,
       });
-      
-      case constants.NO_CONTENT:
+
+    case constants.NO_CONTENT:
       res.json({
         title: "Content Not Exists",
         message: err.message,
@@ -65,7 +65,7 @@ const errorHandler = (err, req, res, next) => {
         title: "Unable to process the request",
         message: "Request Contains Semantic errors, and the Server can’t process it",
         // message: err.message,
-    });
+      });
   }
 };
 

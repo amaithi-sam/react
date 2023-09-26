@@ -1,3 +1,4 @@
-.single{
+.single {
     display: flex;
+    flex-direction: column;
 }

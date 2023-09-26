@@ -34,9 +34,6 @@ const getSingleArticle = asyncHandler(async (req, res) => {
 //---------------------------------------------------------------
 
 
-
-
-
 //@ Desc Get User-All Articles
 //@route GET /api/articles/user
 //@ access Private
@@ -71,7 +68,7 @@ const getUserArticle = asyncHandler(async (req, res) => {
 //@ access Private
 
 const createArticle = asyncHandler(async (req, res) => {
-  const { user_id, title, summary, blog_data, article_category, visibility } = req.body;
+  const { title, summary, blog_data, article_category, visibility } = req.body;
 
 
   const { error } = validator.validateArticle(title, summary, blog_data, article_category, visibility);
@@ -88,6 +85,8 @@ const createArticle = asyncHandler(async (req, res) => {
   // let pub = null;         // var variable = (condition) ? (true block) : (else block)
 
   var pub = (!visibility === true) ? null : Date.now();
+
+  let user_id = req.user.id;
 
   const newArticle = await articleService.createArticle(user_id, title, summary, blog_data, cate_id, visibility, pub);
   console.log(newArticle);
@@ -113,10 +112,11 @@ const updateArticle = asyncHandler(async (req, res) => {
   if (error) { res.status(403); throw new Error(`${error}`); }
 
   const article = await articleService.findOneArticle(req.params.id);
+  console.log(article);
 
   if (!article) { res.status(404); throw new Error(messages.article.mes_1); }
 
-  if (article.user_id.toString() !== req.user.id.toString()) { res.status(403); throw new Error(messages.article.mes_5); }
+  if (article.user_id._id.toString() !== req.user.id.toString()) { res.status(403); throw new Error(messages.article.mes_5); }
 
   var pub = (!visibility == "true") ? null : Date.now();
 
@@ -151,7 +151,7 @@ const deleteArticle = asyncHandler(async (req, res) => {
 
   if (!article) { res.status(404); throw new Error(messages.article.mes_1); }
 
-  if (article.user_id.toString() !== req.user.id.toString()) { res.status(403); throw new Error(messages.article.mes_5); }
+  if (article.user_id._id.toString() !== req.user.id.toString()) { res.status(403); throw new Error(messages.article.mes_5); }
 
   const deletedArticle = await articleService.deleteOneArticle(req.params.id);
 
